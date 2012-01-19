@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "has_followers"
   gem.homepage = "http://github.com/fabianoalmeida/has_followers"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Add followers support to Rails 3 apps"
+  gem.description = "Add followers support to Rails 3 apps"
   gem.email = "fabianoalmeida@gmail.com"
   gem.authors = ["Fabiano Almeida"]
   # dependencies defined in Gemfile
