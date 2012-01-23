@@ -8,50 +8,64 @@ module Has
       def has_followers
         include Has::Followers::InstanceMethods
         
-        has_many :following, :class_name => "Follow", :source => :user,     :conditions => { :user_id => :id }
-        has_many :followers, :class_name => "Follow", :source => :follower, :conditions => { :follower_id => :id }
+        has_many :followed_to, :class_name => 'Follow', :foreign_key => 'user_id'
+        has_many :follower_to, :class_name => 'Follow', :foreign_key => 'followed_id'
+        has_many :followeds, :through => :followed_to, :source => :followed
+        has_many :followers, :through => :follower_to, :source => :follower
       end
     end
     
     module InstanceMethods
-      def be_follow(follower)
-        ActiveRecord::Base.transaction do
-          self.following.create(:follower_id => follower.id)
-          increment_counters(follower)
-        end
-      end
-      
-      def unfollow(follower)
-        ActiveRecord::Base.transaction do
-          if is_following?(follower)
-            following_for(follower)
-            follow.destroy
+      def follow(followed)
+        unless following?(followed) || is?(followed)
+          ActiveRecord::Base.transaction do
+            Follow.create(:user_id => self.id, :followed_id => followed.id)
+            increment_counters(followed)
           end
         end
       end
       
-      def is_following?(follower)
-        follow = following_for(follower)
-        ! follow.nil?
+      def unfollow(followed)
+        if following?(followed) && ! is?(followed)
+          ActiveRecord::Base.transaction do
+            follow = following_for(followed)
+            unless follow.nil?
+              follow.destroy
+              decrement_counters(followed)
+            end
+          end
+        end
       end
       
-      def following_for(follower)
-        following.first :conditions => { :follower_id => follower.id }
+      def following?(followed)
+        return follow = following_for(followed)
       end
       
-      def is_my_follower?(user)
-        follow = follower_for(user)
-        !!(follow)
+      def following_for(followed)
+        self.followeds.where( :id => followed.id ).first
       end
       
-      def follower_for(user)
-        following.first :conditions => { :user_id => user.id, :follower_id => self.id }
+      def follow_me?(follower)
+        return follow = followed_for(follower)
+      end
+      
+      def followed_for(follower)
+        self.followers.where( :id => follower.id ).first
+      end
+      
+      def is?(followed)
+        self.id.eql?( followed.id )
       end
       
       private
       def increment_counters(follower)
-        User.increment_counter(:following_count, self.id)
-        User.increment_counter(:followers_count, follower.id)
+        self.update_attributes( { :followeds_count => self.followeds_count + 1 } )
+        follower.update_attributes( { :followers_count => follower.followers_count + 1 } )
+      end
+      
+      def decrement_counters(followed)
+        self.update_attributes( { :followeds_count => self.followeds_count - 1 } )
+        followed.update_attributes( { :followers_count => followed.followers_count - 1 } )
       end
     end
   end
