@@ -42,7 +42,7 @@ If you want to know if you is following someone
 There's a user that you want to know whether he is following you
  you.follow_me?(someone) # => Follow object if he is following you
 
-Or cause you want to know the user's <code>Follow</code> relationship between you and your followed or follower
+Or cause you want to know which relationship between you and your followed or follower
  you.following_for(someone)
 Or
  you.followed_for(someone)
