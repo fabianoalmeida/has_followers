@@ -4,10 +4,6 @@ require 'rspec'
 require 'active_record'
 require 'has_followers'
 
-# Requires supporting files with custom matchers and macros, etc,
-# in ./support/ and its subdirectories.
-# Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
-
 ActiveRecord::Base.configurations = {'test' => {:adapter => 'sqlite3', :database => ":memory:"}}
 ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations["test"])
 
@@ -35,4 +31,15 @@ Object.unset_class('User')
 
 class User < ActiveRecord::Base
   has_followers
+end
+
+class Follow < ActiveRecord::Base  
+  belongs_to :follower, :class_name => "User", :foreign_key => "user_id"
+  belongs_to :followed, :class_name => "User", :foreign_key => "followed_id"
+  
+  # callback
+  after_destroy do |f|
+    User.decrement_counter(:followeds_count, f.user_id)
+    User.decrement_counter(:followers_count, f.follower_id)
+  end
 end
