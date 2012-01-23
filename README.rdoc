@@ -13,6 +13,11 @@ NOTE: It's necessary there's a *User* model. When is executing the migration thi
 == Usage
 It's very simple to use this gem. See the examples below.
 
+First, it's necessary to add a method that will create all of behavior to use this gem
+ class User < ActiveRecord::Base
+   has_followers
+ end
+
 To follow someone you need only do this
  you.follow(someone)
 This action automatically increment your <code>followeds_count</code> column and his (someone) <code>followers_count</code> column too.
