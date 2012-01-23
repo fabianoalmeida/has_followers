@@ -1,8 +1,4 @@
-sudo apt-get install rails
 script: "rspec spec"
-before_install:
-  - rails g has_followers:migration
-  - rake db:migrate
 env:
   - DB=sqlite
 language: ruby
