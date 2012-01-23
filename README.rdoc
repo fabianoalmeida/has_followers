@@ -1,4 +1,4 @@
-= has_followers
+= has_followers {<img src="https://secure.travis-ci.org/fabianoalmeida/has_followers.png" />}[http://travis-ci.org/fabianoalmeida/has_followers]
 
 *ATTENTION:* This is a Rails 3 implementation.
 
