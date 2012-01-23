@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-group :development do
+group :test do
   gem "rspec"
   gem "rspec-rails", "~> 2.4"
   gem "activerecord", "~> 3.1.3"
