@@ -7,12 +7,12 @@ ActiveRecord::Schema.define(:version => 0) do
   
   create_table :users do |t|
     t.string :login
-    t.integer :following_count, :default => 0, :null => false
+    t.integer :followeds_count, :default => 0, :null => false
     t.integer :followers_count, :default => 0, :null => false
   end
   
   create_table :follows do |t|
-    t.references :user, :follower
+    t.references :followed, :user
     t.timestamps
   end
 end
