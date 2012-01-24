@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 group :test do
+  gem "sqlite3"
   gem "rspec"
   gem "rspec-rails", "~> 2.4"
   gem "activerecord", "~> 3.1.3"
