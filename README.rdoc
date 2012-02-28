@@ -1,19 +1,19 @@
 = has_followers {<img src="https://secure.travis-ci.org/fabianoalmeida/has_followers.png" />}[http://travis-ci.org/fabianoalmeida/has_followers]
 
-*ATTENTION:* This is a Rails 3 implementation.
+*ATTENTION:* This is a Rails 3 only implementation.
 
-NOTE: It's necessary there's a *User* model. When is executing the migration this gem will create two columns in users' table: <code>followeds_count</code> and <code>followers_count</code>.
+NOTE: It's necessary to a *User* model exist. Executing the migration it will add two columns in <code>users</code> table: <code>followeds_count</code> and <code>followers_count</code>.
 
-== Instalation
+== Installation
 * The first step is add this gem to your Gemfile <code>gem 'has_followers'</code>
 * After that, install the gem in your development environment <code>bundle install</code>
-* Execute the migration generator to create tables and columns necessary <code>rails g has_followers:migration</code>
+* Execute the migration generator to create the necessary tables and columns <code>rails g has_followers:migration</code>
 * Run the migrations with <code>rake db:migrate</code>
 
 == Usage
 It's very simple to use this gem. See the examples below.
 
-First, it's necessary to add a method that will create all of behavior to use this gem
+First, you'll need to add the <code>has_followers</code> method to your model.
  class User < ActiveRecord::Base
    has_followers
  end
@@ -22,11 +22,11 @@ To follow someone you need only do this
  you.follow(someone)
 This action automatically increment your <code>followeds_count</code> column and his (someone) <code>followers_count</code> column too.
 
-Cause you want to unfollow someone, no problem. It's similar to follow someone
+If you want to unfollow someone, no problem. It's similar to follow someone
  you.unfollow(someone)
 When you <code>unfollow</code> someone, this automatically decrement your <code>followeds_count</code> column and his (someone) <code>followers_count</code> column too.
 
-You can check how many users you is following
+You can check how many users you are following
  you.followeds_count
 
 Or how many users are following you
@@ -41,18 +41,18 @@ And your followers
 Check if the user is you
  you.is?(someone) # => true if someone is you
 
-If you want to know if you is following someone
+If you want to know if you are following someone
  you.following?(someone) # => Follow object if you already following someone
 
-There's a user that you want to know whether he is following you
+If you want to know if someone is following you
  you.follow_me?(someone) # => Follow object if he is following you
 
-Or cause you want to know which relationship between you and your followed or follower
+Or in case you want to know the relationship between you and your followed or follower
  you.following_for(someone)
 Or
  you.followed_for(someone)
 
-The first one will finding on your followeds list, however the second one will find on your followers list.
+The first one will find on your followeds list, however the second one will find on your followers list.
 
 == Contributing to has_followers
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
